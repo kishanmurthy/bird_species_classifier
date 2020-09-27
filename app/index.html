@@ -1,0 +1,61 @@
+<html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <body>
+        <h1>
+            Bird Species Classifier
+        </h1>
+        <form id="data" method="post" enctype="multipart/form-data">
+            <input type="file" id="bird-image" name="bird" accept="image/*">
+            <button id = "predict_upload"> Predict</button>    
+        </form>
+        
+    </body>
+
+    <script>
+
+            $("form#data").submit(function(e) {
+                e.preventDefault();    
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: "predict",
+                    type: 'POST',
+                    data: formData,
+                    success: function (data) {
+                        console.log("Success",data)
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+
+            // $("#predict_upload").click(function(){
+            //     var fd = new FormData(this);
+            //     if(files){
+            //         $.ajax({
+            //             url: "predict",
+            //             type: "POST",
+            //             data: fd,
+            //             success: function (msg) {
+            //                 console.log("Ajax success")
+            //             },
+            //             cache: false,
+            //             contentType: false,
+            //             processData: false
+            //         });
+            //     }else{
+            //         alert("No image selected")
+            //     }
+                
+            // $.ajax({
+            //     url: '/predict',
+            //     method: 'post',
+            //     data: fd,
+            //     success: function(response){
+            //         console.log(response)
+            //     },
+            // });
+        // });
+    </script>
+</html>
