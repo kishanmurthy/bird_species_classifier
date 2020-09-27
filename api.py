@@ -21,7 +21,6 @@ def allowed_file(filename):
 def predict():
     data_file = request.files['bird']
     file_name = process_file(data_file,app.config['image_dir'], ALLOWED_EXTENSIONS)
-    file_name
     return "hello"
 
 
