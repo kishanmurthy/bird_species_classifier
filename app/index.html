@@ -4,15 +4,18 @@
         <h1>
             Bird Species Classifier
         </h1>
-        <form id="data" method="post" enctype="multipart/form-data">
-            <input type="file" id="bird-image" name="bird" accept="image/*">
-            <button id = "predict_upload"> Predict</button>    
-        </form>
-        
+        <div>
+            <form id="data" method="post" enctype="multipart/form-data">
+                <input type="file" id="bird-image" name="bird" accept="image/*">
+                <button id = "predict_upload"> Predict</button>    
+            </form>
+        </div>
+        <div>
+            <p id="display-meesage"></p>
+        </div>
     </body>
 
     <script>
-
             $("form#data").submit(function(e) {
                 e.preventDefault();    
                 var formData = new FormData(this);
@@ -22,7 +25,14 @@
                     type: 'POST',
                     data: formData,
                     success: function (data) {
-                        console.log("Success",data)
+                        if(data.probability > 0.6){
+                            $("#display-meesage").html(`The bird belongs to ${data.bird_class} class with ${(data.probability*100).toFixed(0)}% probability.`)
+                        }else{
+                            $("#display-meesage").html(`Could not determine the class of the bird. The bird is similar to ${data.bird_class} class with ${(data.probability*100).toFixed(0)}% similarity.`)
+                        }
+                    },
+                    error: function() { 
+                        $("#display-meesage").html(`Error occured.`)
                     },
                     cache: false,
                     contentType: false,
@@ -30,32 +40,5 @@
                 });
             });
 
-            // $("#predict_upload").click(function(){
-            //     var fd = new FormData(this);
-            //     if(files){
-            //         $.ajax({
-            //             url: "predict",
-            //             type: "POST",
-            //             data: fd,
-            //             success: function (msg) {
-            //                 console.log("Ajax success")
-            //             },
-            //             cache: false,
-            //             contentType: false,
-            //             processData: false
-            //         });
-            //     }else{
-            //         alert("No image selected")
-            //     }
-                
-            // $.ajax({
-            //     url: '/predict',
-            //     method: 'post',
-            //     data: fd,
-            //     success: function(response){
-            //         console.log(response)
-            //     },
-            // });
-        // });
     </script>
 </html>

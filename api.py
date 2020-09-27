@@ -1,10 +1,11 @@
 import os
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, flash, request, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
 import uuid
 from datetime import datetime
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 from utils import process_file
+from pipelines.classifiers import bird_classifer
 
 app = Flask(__name__, static_folder='app', static_url_path="/app")
 
@@ -20,8 +21,9 @@ def allowed_file(filename):
 @app.route("/predict", methods=['POST'])
 def predict():
     data_file = request.files['bird']
-    file_name = process_file(data_file,app.config['image_dir'], ALLOWED_EXTENSIONS)
-    return "hello"
+    file_path = process_file(data_file,app.config['image_dir'], ALLOWED_EXTENSIONS)
+    result = bird_classifer.classify(file_path)
+    return jsonify(result)
 
 
 @app.route('/', defaults={'path': ''})
