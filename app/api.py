@@ -2,15 +2,17 @@ from app import app
 from flask import  request, jsonify
 from app.utils import process_file
 from pipelines.classifiers import bird_classifer
+from fastai.vision.core import PILImage  
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
 @app.route("/predict", methods=['POST'])
 def predict():
-    data_file = request.files['bird']
-    file_path = process_file(data_file,app.config['image_dir'], ALLOWED_EXTENSIONS)
-    result = bird_classifer.classify(file_path)
+    data_image = request.files['bird']
+    #file_path = process_file(data_image,app.config['image_dir'], ALLOWED_EXTENSIONS)
+    image = PILImage.create(data_image)
+    result = bird_classifer.classify(image)
     return jsonify(result)
 
 

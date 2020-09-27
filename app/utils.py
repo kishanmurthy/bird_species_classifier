@@ -14,10 +14,11 @@ def save_file(data_file,image_dir_path,filename):
     data_file.save(filepath)
     return filepath
 
-def process_file(data_file,image_dir_path, extensions):
+def process_file(data_file,image_dir_path, extensions, save=False):
     extension = get_file_extension(data_file.filename)
     if extension not in extensions:
         raise Exception("Invalid File Extension")
     file_name = get_guid_filename(extension)
-    filepath = save_file(data_file,image_dir_path,file_name)
-    return filepath
+    if save:
+        filepath = save_file(data_file,image_dir_path,file_name)
+        return filepath
